@@ -1,0 +1,26 @@
+{
+  "name": "streambot",
+  "version": "1.0.0",
+  "description": "Multi-platform streaming data monitor and analytics tool",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "streaming",
+    "twitch",
+    "youtube",
+    "monitor",
+    "analytics"
+  ],
+  "author": "ChristopherD0",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
