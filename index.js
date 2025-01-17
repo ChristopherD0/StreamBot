@@ -1,20 +1,20 @@
-const TwitchAPI = require('./lib/twitch');
+const StreamMonitor = require('./lib/monitor');
 
 console.log('StreamBot starting...');
 
-const twitch = new TwitchAPI();
+const monitor = new StreamMonitor();
 
-async function testTwitchAPI() {
-  try {
-    const streamInfo = await twitch.getStreamInfo('shroud');
-    if (streamInfo) {
-      console.log(`${streamInfo.user_name} is live with ${streamInfo.viewer_count} viewers`);
-    } else {
-      console.log('Stream is offline or not found');
-    }
-  } catch (error) {
-    console.error('Twitch API test failed:', error.message);
-  }
-}
+// Add some popular streamers to monitor
+monitor.addStream('twitch', 'shroud');
+monitor.addStream('twitch', 'ninja');
+monitor.addStream('twitch', 'pokimane');
 
-// testTwitchAPI();
+// Start monitoring every 2 minutes
+monitor.start(120000);
+
+// Graceful shutdown
+process.on('SIGINT', () => {
+  console.log('\nShutting down StreamBot...');
+  monitor.stop();
+  process.exit(0);
+});
