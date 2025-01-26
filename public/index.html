@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamBot Dashboard</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: #1a1a1a; 
+            color: #fff; 
+        }
+        h1 { color: #9146ff; }
+        .stream-card { 
+            background: #2f2f2f; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #9146ff;
+        }
+        .online { border-left-color: #00ff00; }
+        .offline { border-left-color: #ff4444; }
+        .status { font-weight: bold; }
+        .viewers { color: #ffd700; }
+        .game { color: #888; }
+        .refresh-btn { 
+            background: #9146ff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 20px;
+        }
+        .refresh-btn:hover { background: #7c3aed; }
+    </style>
+</head>
+<body>
+    <h1>StreamBot Dashboard</h1>
+    <button class="refresh-btn" onclick="loadStreams()">Refresh Data</button>
+    <div id="streams"></div>
+
+    <script>
+        async function loadStreams() {
+            try {
+                const response = await fetch('/api/streams');
+                const streams = await response.json();
+                
+                const container = document.getElementById('streams');
+                container.innerHTML = streams.map(stream => `
+                    <div class="stream-card ${stream.isOnline ? 'online' : 'offline'}">
+                        <h3>${stream.platform}/${stream.username}</h3>
+                        <div class="status">${stream.isOnline ? '🔴 LIVE' : '⚫ OFFLINE'}</div>
+                        ${stream.isOnline ? `
+                            <div class="viewers">👥 ${stream.viewerCount.toLocaleString()} viewers</div>
+                            <div class="game">🎮 ${stream.game}</div>
+                        ` : ''}
+                        <div style="margin-top: 10px; color: #888;">
+                            Last updated: ${stream.lastUpdate ? new Date(stream.lastUpdate).toLocaleString() : 'Never'}
+                        </div>
+                        <div style="color: #888;">
+                            Data points: ${stream.historyCount}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading streams:', error);
+            }
+        }
+        
+        // Load data on page load and refresh every 30 seconds
+        loadStreams();
+        setInterval(loadStreams, 30000);
+    </script>
+</body>
+</html>

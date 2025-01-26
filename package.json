@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "server": "node server.js",
+    "dashboard": "nodemon server.js"
   },
   "keywords": [
     "streaming",
@@ -18,7 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.0",
-    "dotenv": "^16.3.0"
+    "dotenv": "^16.3.0",
+    "express": "^4.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
